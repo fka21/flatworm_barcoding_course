@@ -1,0 +1,25 @@
+image: gitpod/workspace-full
+
+tasks:
+  - name: Setup Miniconda and Install R
+    init: |
+      # Install Miniconda3 if not already installed
+      if [ ! -d "$HOME/miniconda3" ]; then
+        wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
+        bash ~/miniconda.sh -b -p $HOME/miniconda3
+        rm ~/miniconda.sh
+      fi
+      
+      # Initialize conda
+      source $HOME/miniconda3/bin/activate
+      conda init bash
+      conda config --set auto_activate_base false
+      conda config --add channels bioconda
+      conda config --add channels conda-forge
+      conda config --set channel_priority strict
+      
+      # Create a bioinformatics environment with R
+      conda create -y -n bioinfo python=3.9 r-base r-essentials r-tidyverse bioconductor-ggtree bioconductor-sangeranalyser r-phytools
+
+      # Activate environment and install R packages
+      source $HOME/miniconda3/bin/activate bioinfo
