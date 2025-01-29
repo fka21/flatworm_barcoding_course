@@ -8,15 +8,15 @@ suppress_lib_loading("sangeranalyseR")
 suppress_lib_loading("tidyverse")
 suppress_lib_loading("optparse")
 
-# Define command line arguments
+# Define command line arguments with unique short flags
 option_list <- list(
   make_option(c("-d", "--directory"), type = "character", default = NULL, help = "Directory containing .ab1 files", metavar = "character"),
   make_option(c("-t", "--trim_method"), type = "character", default = "M2", help = "Trimming method (default is 'M2')", metavar = "character"),
   make_option(c("-m", "--m1_cutoff"), type = "numeric", default = NULL, help = "M1 Trimming Cutoff", metavar = "numeric"),
-  make_option(c("-c", "--m2_cutoff_quality"), type = "numeric", default = 40, help = "M2 Cutoff Quality Score (default is 40)", metavar = "numeric"),
+  make_option(c("-q", "--m2_cutoff_quality"), type = "numeric", default = 40, help = "M2 Cutoff Quality Score (default is 40)", metavar = "numeric"),
   make_option(c("-w", "--m2_sliding_window_size"), type = "numeric", default = 5, help = "M2 Sliding Window Size (default is 5)", metavar = "numeric"),
   make_option(c("-b", "--base_num_per_row"), type = "numeric", default = 100, help = "Base number per row (default is 100)", metavar = "numeric"),
-  make_option(c("-h", "--height_per_row"), type = "numeric", default = 200, help = "Height per row (default is 200)", metavar = "numeric"),
+  make_option(c("-r", "--height_per_row"), type = "numeric", default = 200, help = "Height per row (default is 200)", metavar = "numeric"),
   make_option(c("-s", "--signal_ratio_cutoff"), type = "numeric", default = 0.33, help = "Signal Ratio Cutoff (default is 0.33)", metavar = "numeric"),
   make_option(c("-o", "--output_dir"), type = "character", default = NULL, help = "Directory to save output fasta files", metavar = "character")
 )
