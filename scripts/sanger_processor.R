@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 # Function to suppress library loading messages
 suppress_lib_loading <- function(package) {
   suppressMessages(library(package, character.only = TRUE))
@@ -10,13 +12,13 @@ suppress_lib_loading("optparse")
 
 # Define command line arguments with unique short flags
 option_list <- list(
-  make_option(c("-d", "--directory"), type = "character", default = NULL, help = "Directory containing .ab1 files", metavar = "character"),
+  make_option(c("-d", "--directory"), type = "character", default = NULL, help = "Directory containing .ab1 files. Please provide the full path.", metavar = "character"),
   make_option(c("-q", "--m2_cutoff_quality"), type = "numeric", default = 40, help = "M2 Cutoff Quality Score [default=40]", metavar = "numeric"),
   make_option(c("-w", "--m2_sliding_window_size"), type = "numeric", default = 5, help = "M2 Sliding Window Size [default=5]", metavar = "numeric"),
   make_option(c("-b", "--base_num_per_row"), type = "numeric", default = 100, help = "Base number per row [default=100]", metavar = "numeric"),
   make_option(c("-r", "--height_per_row"), type = "numeric", default = 200, help = "Height per row [default=200]", metavar = "numeric"),
   make_option(c("-s", "--signal_ratio_cutoff"), type = "numeric", default = 0.33, help = "Signal Ratio Cutoff [default=0.33]", metavar = "numeric"),
-  make_option(c("-o", "--output_dir"), type = "character", default = NULL, help = "Directory to save output fasta files", metavar = "character")
+  make_option(c("-o", "--output_dir"), type = "character", default = NULL, help = "Directory to save output fasta files. Please provide the full path.", metavar = "character")
 )
 
 # Parse command line arguments
