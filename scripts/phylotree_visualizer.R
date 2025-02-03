@@ -1,7 +1,12 @@
+# Function to suppress library loading messages
+suppress_lib_loading <- function(package) {
+  suppressMessages(library(package, character.only = TRUE))
+}
+
 # Load required libraries
-library(ape)
-library(ggtree)
-library(optparse)
+suppress_lib_loading('ape')
+suppress_lib_loading('ggtree')
+suppress_lib_loading('optparse')
 
 # Define command-line options
 option_list <- list(
