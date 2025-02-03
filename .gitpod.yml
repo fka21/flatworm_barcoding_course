@@ -19,7 +19,7 @@ tasks:
       conda config --set channel_priority strict
       
       # Create a bioinformatics environment with R
-      conda create -y -n bioinfo python=3.9 r-base r-essentials r-tidyverse bioconductor-ggtree bioconductor-sangeranalyser r-phytools r-this.path r-optparse
+      conda create -y -n bioinfo python=3.9 r-base r-essentials r-tidyverse bioconductor-ggtree bioconductor-sangeranalyser r-phytools r-this.path r-optparse r-ggtree r-ape
 
       # Activate environment and install R packages
       source $HOME/miniconda3/bin/activate bioinfo
