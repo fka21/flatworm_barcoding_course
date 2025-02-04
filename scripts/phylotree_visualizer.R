@@ -35,7 +35,6 @@ tree <- read.tree(input_file)
 
 # Create the plot
 p <- ggtree(tree) +
-  geom_tiplab() +  # Display tip labels
   geom_text2(aes(subset = !is.na(label), label = label), hjust = -0.3) + # Display bootstrap values
   geom_treescale()  # Add a scale bar
 
