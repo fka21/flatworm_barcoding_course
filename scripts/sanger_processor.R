@@ -34,7 +34,7 @@ if (is.null(opt$directory) || is.null(opt$output_dir)) {
 
 # Convert relative paths to absolute paths
 input_dir <- normalizePath(opt$directory, mustWork = TRUE)
-output_dir <- normalizePath(opt$output_dir, mustWork = FALSE)
+output_dir <- normalizePath(opt$output_dir, mustWork = TRUE)
 
 # Create the output directory if it doesn't exist
 if (!dir.exists(output_dir)) {
