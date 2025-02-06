@@ -53,24 +53,46 @@ if (length(ab1_files) == 0) {
   stop("No .ab1 files found in the specified directory: ", input_dir, call. = FALSE)
 }
 
-# Loop through each .ab1 file and apply the SangerRead function
-for (file in ab1_files) {
-  sangerRead <- SangerRead(
-    readFeature           = "Reverse Read",
-    readFileName          = file,
-    geneticCode           = GENETIC_CODE,
-    TrimmingMethod        = "M2",
-    M1TrimmingCutoff      = NULL,
-    M2CutoffQualityScore  = opt$m2_cutoff_quality,
-    M2SlidingWindowSize   = opt$m2_sliding_window_size,
-    baseNumPerRow         = opt$base_num_per_row,
-    heightPerRow          = opt$height_per_row,
-    signalRatioCutoff     = opt$signal_ratio_cutoff,
-    showTrimmed           = TRUE
-  )
+# Extract unique sample names by removing "_X_F.ab1" and "_X_R.ab1"
+file_base_names <- unique(gsub("_[0-9]+_[FR]\\.ab1$", "", basename(ab1_files)))
+
+# Loop through each unique sample and process forward & reverse pairs
+for (base_name in file_base_names) {
+  forward_read <- file.path(input_dir, paste0(base_name, "_1_F.ab1"))
+  reverse_read <- file.path(input_dir, paste0(base_name, "_1_R.ab1"))
   
-  # Write the output fasta file to the specified directory
-  output_file <- file.path(output_dir, paste0(tools::file_path_sans_ext(basename(file)), ".fasta"))
-  writeFasta(sangerRead, outputDir = output_dir)
-  cat("Fasta file written to:", output_file, "\n")
+  # Check if both forward and reverse reads exist
+  if (file.exists(forward_read) && file.exists(reverse_read)) {
+    sangerContig <- SangerContig(
+      inputSource          = "ABIF",
+      processMethod        = "REGEX",
+      ABIF_Directory       = input_dir,
+      contigName           = base_name,
+      REGEX_SuffixForward  = "_[0-9]+_F.ab1$",
+      REGEX_SuffixReverse  = "_[0-9]+_R.ab1$",
+      TrimmingMethod       = "M2",
+      M1TrimmingCutoff     = NULL,
+      M2CutoffQualityScore = opt$m2_cutoff_quality,
+      M2SlidingWindowSize  = opt$m2_sliding_window_size,
+      baseNumPerRow        = opt$base_num_per_row,
+      heightPerRow         = opt$height_per_row,
+      signalRatioCutoff    = opt$signal_ratio_cutoff,
+      showTrimmed          = TRUE,
+      minReadsNum          = 2,
+      minReadLength        = 20,
+      minFractionCall      = 0.5,
+      maxFractionLost      = 0.5,
+      geneticCode          = getGeneticCode("Echinoderm Mitochondrial; Flatworm Mitochondrial", full.search=T),
+      acceptStopCodons     = TRUE,
+      readingFrame         = 1,
+      processorsNum        = 1
+    )
+    
+    # Write the output fasta file to the specified directory
+    output_file <- file.path(output_dir, paste0(base_name, ".fasta"))
+    writeFasta(sangerContig, outputDir = output_dir)
+    cat("Fasta file written to:", output_file, "\n")
+  } else {
+    cat("Skipping:", base_name, "- Missing forward or reverse read\n")
+  }
 }
